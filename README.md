@@ -1,90 +1,90 @@
-# Revena - AI Medical Audit Platform (Prototype)
+# Revena - Plataforma de Auditoria Médica com IA (Protótipo)
 
-**Revena** is a next-generation auditing interface designed to automate and streamline the review of medical bills using Artificial Intelligence. This prototype demonstrates the core auditing workflows, real-time AI simulation, and user interaction patterns.
+**Revena** é uma interface de auditoria de próxima geração projetada para automatizar e otimizar a revisão de contas médicas usando Inteligência Artificial. Este protótipo demonstra os fluxos principais de auditoria, simulação de IA em tempo real e padrões de interação do usuário.
 
-## 🏗 System Architecture
+## 🏗 Arquitetura do Sistema
 
-This project is a **Frontend-first simulation**. While it looks and feels like a production app connected to a robust backend, the auditing logic and data persistence are handled entirely on the client-side for demonstration purposes.
+Este projeto é uma **simulação Frontend-first**. Embora tenha a aparência e a sensação de um aplicativo de produção conectado a um backend robusto, a lógica de auditoria e a persistência de dados são tratadas inteiramente no lado do cliente (client-side) para fins de demonstração.
 
-### High-Level Design
+### Design de Alto Nível
 
 ```mermaid
 graph TD
-    User[Auditor] -->|Interacts| UI[React UI Layer]
-    UI -->|Dispatches Actions| Store[Zustand Audit Store]
+    User[Auditor] -->|Interage| UI[Camada UI React]
+    UI -->|Dispara Ações| Store[Zustand Audit Store]
     
-    subgraph "Core Modules"
-        Store -->|Manages| JobQueue[Job Queue & Status]
-        Store -->|Manages| Workspace[Audit Workspace State]
-        Store -->|Simulates| AIEngine[AI Analysis Engine]
+    subgraph "Módulos Principais"
+        Store -->|Gerencia| JobQueue["Fila de Processamento"]
+        Store -->|Gerencia| Workspace["Estado do Workspace"]
+        Store -->|Simula| AIEngine["Motor de Análise IA"]
     end
     
-    AIEngine -->|Streams Logs| Terminal[Live Log Terminal]
-    AIEngine -->|Updates| JobState[Job Status (Queued -> Processing -> Ready)]
+    AIEngine -->|Streaming| Terminal[Terminal de Logs ao Vivo]
+    AIEngine -->|Atualiza| JobState["Status do Job (Fila -> Processando -> Pronto)"]
     
-    Workspace -->|Reads| MockPDF[PDF Viewer]
-    Workspace -->|Edits| AuditItems[Detected Items List]
+    Workspace -->|Lê| MockPDF[Visualizador PDF]
+    Workspace -->|Edita| AuditItems[Lista de Itens Detectados]
     
-    User -->|Exports| XML[XML Report Generator]
+    User -->|Exporta| XML[Gerador de Relatório XML]
 ```
 
-## 🧩 Core Components
+## 🧩 Componentes Principais
 
-### 1. The Audit Store (`auditStore.ts`)
-The "brain" of the application. It uses **Zustand** to manage global state:
-*   **Job Lifecycle:** Transitions jobs from `queued` to `processing` to `ready`.
-*   **AI Simulation:** Mimics server-side processing delays and emits granular "log" events for the terminal.
-*   **Audit Items:** Manages the list of medicines, materials, and procedures detected by the "AI".
+### 1. Audit Store (`auditStore.ts`)
+O "cérebro" da aplicação. Utiliza **Zustand** para gerenciar o estado global:
+*   **Ciclo de Vida do Job:** Transita jobs de `na fila` para `processando` para `pronto`.
+*   **Simulação de IA:** Imita atrasos de processamento do servidor e emite eventos de "log" granulares para o terminal.
+*   **Itens de Auditoria:** Gerencia a lista de medicamentos, materiais e procedimentos detectados pela "IA".
 
-### 2. Dashboard & Job Queue
-*   **Real-time Monitoring:** Displays active jobs with live status badges.
-*   **Batch Upload:** Simulates file uploading handling (`BatchUploadModal`), immediately triggering a new AI simulation cycle.
-*   **Auto-Start Onboarding:** Detects first-time visits via `localStorage` to launch a guided tour (`tour.tsx`).
+### 2. Dashboard e Fila de Processamento
+*   **Monitoramento em Tempo Real:** Exibe jobs ativos com badges de status ao vivo.
+*   **Upload em Lote:** Simula o manuseio de upload de arquivos (`BatchUploadModal`), disparando imediatamente um novo ciclo de simulação de IA.
+*   **Onboarding Automático:** Detecta a primeira visita via `localStorage` para iniciar um tour guiado (`tour.tsx`).
 
-### 3. Audit Workspace
-A dual-pane interface optimized for high-velocity auditing:
-*   **Source View (Left/Mobile Tab):** Displays the medical record (PDF). In this prototype, we use a mock PDF structure with interactive "Hotspots" that users can click to verify data.
-*   **Editor View (Right/Mobile Tab):** Listing of extracted items. Users can:
-    *   **Verify Items:** Click "Enter" or hotspots to mark items as checked.
-    *   **Edit/Remove:** Modify quantities or prices.
-    *   **Keyboard Shortcuts:** Full keyboard control for power users (`↓`, `↑`, `Enter`, `Del`).
+### 3. Workspace de Auditoria
+Uma interface de painel duplo otimizada para auditoria de alta velocidade:
+*   **Visualização da Fonte (Esquerda/Aba Mobile):** Exibe o prontuário médico (PDF). Neste protótipo, usamos uma estrutura de mock PDF com "Hotspots" interativos que os usuários podem clicar para verificar dados.
+*   **Visualização do Editor (Direita/Aba Mobile):** Listagem de itens extraídos. Usuários podem:
+    *   **Verificar Itens:** Clicar em "Enter" ou nos hotspots para marcar itens como conferidos.
+    *   **Editar/Remover:** Modificar quantidades ou preços.
+    *   **Atalhos de Teclado:** Controle total via teclado para power users (`↓`, `↑`, `Enter`, `Del`).
 
-### 4. AI Simulation Engine
-To create a convincing demo without a backend, we implemented a simulation sequence:
-1.  **Context Initialization:** Validates file type.
-2.  **Structure Analysis:** "Reads" the PDF pages.
-3.  **Entity Extraction:** Identifies items (Medicines, OPMs).
-4.  **Rule Validation:** Checks against insurance coverage rules.
-*   *Implementation:* Asynchronous `setTimeout` chains that update the store and push log entries.
+### 4. Motor de Simulação de IA
+Para criar uma demonstração convincente sem backend, implementamos uma sequência de simulação:
+1.  **Inicialização de Contexto:** Valida o tipo de arquivo.
+2.  **Análise de Estrutura:** "Lê" as páginas do PDF.
+3.  **Extração de Entidades:** Identifica itens (Medicamentos, OPMEs).
+4.  **Validação de Regras:** Verifica contra regras de cobertura de seguro.
+*   *Implementação:* Cadeias assíncronas de `setTimeout` que atualizam a store e enviam entradas de log.
 
 ## 🛠 Tech Stack
 
 *   **Framework:** React 18 + Vite
-*   **Language:** TypeScript
-*   **Styling:** Tailwind CSS + shadcn/ui
-*   **State Management:** Zustand
-*   **Animations:** Framer Motion + MagicUI (TextAnimate)
-*   **Persistence:** LocalStorage (User Preferences & Tour State)
-*   **Routing:** React Router DOM (v6)
+*   **Linguagem:** TypeScript
+*   **Estilização:** Tailwind CSS + shadcn/ui
+*   **Gerenciamento de Estado:** Zustand
+*   **Animações:** Framer Motion + MagicUI (TextAnimate)
+*   **Persistência:** LocalStorage (Preferências do Usuário & Estado do Tour)
+*   **Roteamento:** React Router DOM (v6)
 
-## 🚀 Key Features
+## 🚀 Funcionalidades Chave
 
-*   **Responsive Design:** Fully adaptive layout. Desktop auditing uses a split-screen; mobile auditing uses a tabbed interface.
-*   **Dark Mode Native:** Designed with a "Liquid Glass" dark aesthetic for reduced eye strain during long auditing sessions.
-*   **Real Export:** Client-side generation of standard XML audit reports using the internal object state.
-*   **Smart Tours:** Context-aware onboarding guides that launch automatically for new users but respect experienced users' settings.
+*   **Design Responsivo:** Layout totalmente adaptável. A auditoria em desktop usa tela dividida (split-screen); em mobile usa interface com abas.
+*   **Modo Escuro Nativo:** Projetado com uma estética "Liquid Glass" (vidro líquido) para reduzir o cansaço visual durante longas sessões de auditoria.
+*   **Exportação Real:** Geração client-side de relatórios de auditoria em XML padrão usando o estado interno dos objetos.
+*   **Tours Inteligentes:** Guias de onboarding sensíveis ao contexto que iniciam automaticamente para novos usuários, mas respeitam as configurações de usuários experientes.
 
-## 📂 Project Structure
+## 📂 Estrutura do Projeto
 
 ```bash
 src/
 ├── components/
-│   ├── dashboard/       # Job Queue, Upload Modals
-│   ├── workspace/       # Audit Interface, PDF Viewer, Terminal
-│   ├── ui/              # Reusable atoms (Buttons, Cards, Badges)
+│   ├── dashboard/       # Fila de Jobs, Modais de Upload
+│   ├── workspace/       # Interface de Auditoria, Visualizador PDF, Terminal
+│   ├── ui/              # Átomos reutilizáveis (Botões, Cards, Badges)
 │   └── ...
 ├── store/
-│   └── auditStore.ts    # Central Logic & Simulation Engine
-├── lib/                 # Utilities (CN, formatting)
-└── App.tsx              # Routing & Global Providers
+│   └── auditStore.ts    # Lógica Central & Motor de Simulação
+├── lib/                 # Utilitários (CN, formatação)
+└── App.tsx              # Roteamento & Provedores Globais
 ```
