@@ -386,12 +386,12 @@ export function AuditWorkspace() {
             {/* Header */}
             {/* Header - Apple Style Glassmorphism */}
             <header className="h-14 border-b border-white/5 bg-black/40 backdrop-blur-xl text-white flex items-center px-4 justify-between shrink-0 z-20 sticky top-0">
-                <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" onClick={() => navigate('/')} className="text-white hover:bg-white/10 rounded-full">
+                <div className="flex items-center gap-2 md:gap-4">
+                    <Button variant="ghost" size="icon" onClick={() => navigate('/')} className="text-white hover:bg-white/10 rounded-full shrink-0">
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
                     <div className="flex flex-col overflow-hidden">
-                        <h2 className="font-semibold text-sm md:text-base leading-tight truncate max-w-[150px] md:max-w-md text-slate-100">{activeJob.filename}</h2>
+                        <h2 className="font-semibold text-sm md:text-base leading-tight truncate max-w-[100px] md:max-w-md text-slate-100">{activeJob.filename}</h2>
                         <div className="flex items-center gap-2 text-[10px] md:text-xs opacity-60">
                             <span className="inline">ID: {activeJob.id}</span>
                             <span className="hidden md:inline">•</span>
@@ -399,20 +399,23 @@ export function AuditWorkspace() {
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 md:gap-2">
                     {/* <AnimatedThemeToggler />  -- Removed, focusing on Dark Mode only for premium feel */}
                     <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                         AI Connected
                     </div>
                     <Button
-                        size="sm"
+                        size="icon"
                         variant="ghost"
                         onClick={() => tour.start("workspace")}
-                        className="flex gap-2 text-slate-400 hover:text-white"
+                        className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
                     >
                         <HelpCircle className="h-4 w-4" />
-                        <span className="hidden md:inline">Guia</span>
+                        <span className="sr-only">Guia</span>
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={handleExport} className="flex md:hidden h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10">
+                        <Download className="h-4 w-4" />
                     </Button>
                     <Button size="sm" variant="outline" onClick={handleExport} className="hidden md:flex gap-2 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white backdrop-blur-sm">
                         <Download className="h-4 w-4" /> Exportar
@@ -421,11 +424,10 @@ export function AuditWorkspace() {
                         size="sm"
                         data-tour-step-id="action-verify"
                         onClick={() => setIsVerifyModalOpen(true)}
-                        className="bg-emerald-500 hover:bg-emerald-600 text-white border-0 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all"
+                        className="h-8 px-3 text-xs md:text-sm bg-emerald-500 hover:bg-emerald-600 text-white border-0 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all"
                     >
                         Concluir
                     </Button>
-                    <Button size="sm" variant="secondary" onClick={handleExport} className="flex md:hidden h-8 px-2 text-xs">Exportar</Button>
                 </div>
             </header>
 
