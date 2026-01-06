@@ -310,7 +310,7 @@ function TourOverlay({
                         }}
                     />
                     <PopoverContent
-                        className={cn("px-0 w-[400px]", step.className)}
+                        className={cn("px-0 w-[90vw] md:w-[400px]", step.className)}
                         side={step.side}
                         sideOffset={step.sideOffset}
                         align={step.align}
