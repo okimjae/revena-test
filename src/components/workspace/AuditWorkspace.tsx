@@ -409,9 +409,10 @@ export function AuditWorkspace() {
                         size="sm"
                         variant="ghost"
                         onClick={() => tour.start("workspace")}
-                        className="hidden md:flex gap-2 text-slate-400 hover:text-white"
+                        className="flex gap-2 text-slate-400 hover:text-white"
                     >
-                        <HelpCircle className="h-4 w-4" /> Guia
+                        <HelpCircle className="h-4 w-4" />
+                        <span className="hidden md:inline">Guia</span>
                     </Button>
                     <Button size="sm" variant="outline" onClick={handleExport} className="hidden md:flex gap-2 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white backdrop-blur-sm">
                         <Download className="h-4 w-4" /> Exportar
